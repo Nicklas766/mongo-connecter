@@ -1,18 +1,17 @@
 /**
- * Connect to the database and search using a criteria.
+ * Server to setup enviroment for tests
  */
 "use strict";
 
-// MongoDB
+// Connect to database with mongo-connecter
 const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/people";
-var path = require('path');
-
+const db = require('./src/MongoConnect.js').mongoConnect(dsn, 'artists');
 // Express server
+var path = require('path');
 const express = require("express");
 const app = express();
 
-// Connect to database with mongoConnect
-const db = require('./src/MongoConnect.js').mongoConnect(dsn, 'artists');
+
 
 
 
@@ -94,8 +93,11 @@ app.get("/reset", async (req, res) => {
     }
 });
 
-/* Routes for client. */
+/* Routes with 200 code. */
 app.use('/get', express.static(path.join(__dirname, 'client/public')));
+app.use('/insert', express.static(path.join(__dirname, 'client/public')));
+app.use('/update', express.static(path.join(__dirname, 'client/public')));
+app.use('/delete', express.static(path.join(__dirname, 'client/public')));
 app.use('/reset', express.static(path.join(__dirname, 'client/public')));
 
 
@@ -118,7 +120,6 @@ app.use(function(err, req, res, next) {
         ? err
         : {};
 
-    /* use clients 404 error page */
     res.status(err.status || 500);
 });
 
