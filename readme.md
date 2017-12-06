@@ -20,7 +20,7 @@ npm install mongo-connecter --save
 ```
 
 ## Setup
-```
+```javascript
 const dsn = "mongodb://localhost:27017/people";
 const db  = require('mongo-connecter').connect(dsn, 'collection');
 ```
@@ -29,12 +29,12 @@ const db  = require('mongo-connecter').connect(dsn, 'collection');
 
 
 **Fetch**
-```
+```javascript
 const data = await db.fetch();
 ```
 
 **Insert**
-```
+```javascript
 var item = {
     name: req.body.name,
     wikipedia: req.body.wikipedia
@@ -43,7 +43,7 @@ const info = await db.insert(item);
 ```
 
 **Update**
-```
+```javascript
 var item = {
     name: req.body.name,
     wikipedia: req.body.wikipedia
@@ -53,17 +53,17 @@ await db.update(req.body.id, item);
 ```
 
 **Remove**
-```
+```javascript
 await db.remove(req.body.id);
 ```
 
 **Close**
-```
+```javascript
 await db.close();
 ```
 
 **Example with express**
-```
+```javascript
 // Create an object and return new list of objects
 router.post("/insert", async (req, res) => {
     var item = {
