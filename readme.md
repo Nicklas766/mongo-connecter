@@ -1,7 +1,11 @@
 # mongoConnect
 
-[![Build Status](https://travis-ci.org/Nicklas766/bth-ramverk2.svg?branch=master)](https://travis-ci.org/Nicklas766/bth-ramverk2)
+[![Build Status](https://travis-ci.org/Nicklas766/mongo-connecter.svg?branch=master)](https://travis-ci.org/Nicklas766/mongo-connecter)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/81e618dabfb2cc92e091/maintainability)](https://codeclimate.com/github/Nicklas766/mongo-connecter/maintainability)
+
+[![Code Coverage](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/build-status/master)
 
 This module lets you connect to your mongodb without hassle. It contains a
 prebuilt api.
