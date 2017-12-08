@@ -32,6 +32,29 @@ describe('try out the fetch', function() {
                 done();
             }).catch(done);
     });
+    it('should return veronica maggio at index 1', function(done) {
+        request(app).get("/get")
+            .set('Accept', 'application/json')
+            .expect(200)
+            .then(function (res) {
+                assert(res.body[1].name == "Veronica Maggio");
+                done();
+            }).catch(done);
+    });
+    it('should create new item at index 2', function(done) {
+        request(app).post("/insert")
+            .set('Accept', 'application/json')
+            .send({
+                name: "James Bond",
+                wikipedia: "none",
+                youtube: "none"
+            })
+            .expect(200)
+            .then(function (res) {
+                assert(res.body[2].name == "James Bond");
+                done();
+            }).catch(done);
+    });
     it('should exit with success', function() {
         process.exit(0);
     });

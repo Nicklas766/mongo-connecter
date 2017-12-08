@@ -15,34 +15,49 @@ var ObjectId = require('mongodb').ObjectID;
 */
 const mongoConnect = (dsn, collection) => {
     // Connect and return collection
+    let db;
+
     const connect = async () => {
-        const db  = await mongo.connect(dsn);
+        db        = await mongo.connect(dsn);
         const col = await db.collection(collection);
 
         return col;
     };
 
+
     /* Return async functions for mongoDB actions */
     return {
         async fetch(search = {}) {
-            const col = await connect();
+            const col  = await connect();
+            const data = col.find(search).toArray();
 
-            return col.find(search).toArray();
+            await db.close();
+
+            return data;
         },
         async insert(item) {
-            const col = await connect();
+            const col  = await connect();
+            const data = col.insert(item);
 
-            return col.insert(item);
+            await db.close();
+
+            return data;
         },
         async update(id, item) {
-            const col = await connect();
+            const col  = await connect();
+            const data = col.update({  _id: ObjectId(id) }, { $set: item });
 
-            return col.update({  _id: ObjectId(id) }, { $set: item });
+            await db.close();
+
+            return data;
         },
         async remove(id) {
-            const col = await connect();
+            const col  = await connect();
+            const data = col.remove({ _id: ObjectId(id) });
 
-            return col.remove({ _id: ObjectId(id) });
+            await db.close();
+
+            return data;
         },
 
         async reset() {
@@ -60,16 +75,13 @@ const mongoConnect = (dsn, collection) => {
                 youtube: "https://www.youtube.com/watch?v=sYMByMHwPRI"
             });
 
-            return col.find({}).toArray();
-        },
-
-        async close() {
-            const db  = await mongo.connect(dsn);
+            const data = col.find({}).toArray();
 
             await db.close();
-        }
+
+            return data;
+        },
     };
-    // await db.close();
 };
 
 module.exports = { mongoConnect };

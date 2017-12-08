@@ -1,4 +1,4 @@
-# mongoConnect
+# mongo-connecter
 
 [![Build Status](https://travis-ci.org/Nicklas766/mongo-connecter.svg?branch=master)](https://travis-ci.org/Nicklas766/mongo-connecter)
 
@@ -10,8 +10,10 @@
 This module lets you connect to your mongodb without hassle. It contains a
 prebuilt api.
 
+When you call a function it connects to your mongodb and then closes the connection.
 The functions are asynchronous and returns promises, therefore you'll need to
 use `await` or `.then()`.
+
 
 ## Installation
 
@@ -55,11 +57,6 @@ await db.update(req.body.id, item);
 **Remove**
 ```javascript
 await db.remove(req.body.id);
-```
-
-**Close**
-```javascript
-await db.close();
 ```
 
 **Example with express**

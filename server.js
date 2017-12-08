@@ -10,7 +10,10 @@ const db = require('./src/MongoConnect.js').mongoConnect(dsn, 'artists');
 var path = require('path');
 const express = require("express");
 const app = express();
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 
@@ -47,7 +50,7 @@ app.post("/insert", async (req, res) => {
 });
 
 // Update an object in collection
-app.get("/update", async (req, res) => {
+app.post("/update", async (req, res) => {
     var item = {
         name: req.body.name,
         wikipedia: req.body.wikipedia,
@@ -66,7 +69,7 @@ app.get("/update", async (req, res) => {
 });
 
 // Delete an object in the collection and return new
-app.get("/delete", async (req, res) => {
+app.post("/delete", async (req, res) => {
     try {
         await db.remove(req.body.id);
         const data = await db.fetch();
@@ -83,8 +86,6 @@ app.get("/delete", async (req, res) => {
 app.get("/reset", async (req, res) => {
     try {
         const data = await db.reset();
-
-        await db.close();
 
         res.json(data);
     }    catch (err) {
