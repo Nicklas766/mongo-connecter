@@ -29,6 +29,7 @@ const artists  = require('mongo-connecter').init(dsn, 'artists')
 
 ## How to use
 **`collectionDo`:**
+
 It will execute all functions but return the last,
 ```javascript
 data = await artists.collectionDo(
@@ -73,6 +74,7 @@ await artists.remove(_id)
 ```
 
 **`insertAndFetch(item)`:** inserts and then returns your new item
+
 **`updateAndFetch(_id, item)`:** updates and then returns your updated item
 
 
