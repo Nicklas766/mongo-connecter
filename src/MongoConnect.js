@@ -58,33 +58,21 @@ const init = (dsn, collectionName) => {
 
     return {
         fetch: (search = {}) => collectionDo(col => col.find(search).toArray()),
+        fetchOne: (search = {}) => collectionDo(col => col.findOne(search)),
         insert: (item) => collectionDo(col => col.insert(item)),
-        update: (id, item) => collectionDo(
-            col => col.update({ _id: ObjectId(id) }, { $set: item })
+        update: (id, item) => collectionDo(col =>
+            col.update({ _id: ObjectId(id) }, { $set: item })
         ),
         remove: (id) => collectionDo(col => col.remove({ _id: ObjectId(id) })),
         insertAndFetch: (item) => collectionDo(
             col => col.insert(item),
-            col => col.find(item).toArray()
+            col => col.findOne(item)
         ),
-        updateAndFetch: (item) => collectionDo(
-            col => col.insert(item),
-            col => col.find(item).toArray()
+        updateAndFetch: (id, item) => collectionDo(
+            col => col.update({ _id: ObjectId(id) }, { $set: item }),
+            col => col.findOne({ _id: ObjectId(id) })
         ),
-        reset: () => collectionDo(
-            col => col.deleteMany({}),
-            col => col.insert({
-                name: "Jason Mraz",
-                wikipedia: "https://sv.wikipedia.org/wiki/Jason_Mraz",
-                youtube: "https://www.youtube.com/watch?v=bcQwIxRcaYs"
-            }),
-            col => col.insert({
-                name: "Veronica Maggio",
-                wikipedia: "https://sv.wikipedia.org/wiki/Veronica_Maggio",
-                youtube: "https://www.youtube.com/watch?v=sYMByMHwPRI"
-            }),
-            col => col.find({}).toArray()
-        ),
+        reset: () => collectionDo(col => col.deleteMany({})),
         collectionDo
     };
 };
