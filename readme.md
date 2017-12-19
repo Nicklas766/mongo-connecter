@@ -1,18 +1,14 @@
 # mongo-connecter
 
 [![Build Status](https://travis-ci.org/Nicklas766/mongo-connecter.svg?branch=master)](https://travis-ci.org/Nicklas766/mongo-connecter)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/81e618dabfb2cc92e091/maintainability)](https://codeclimate.com/github/Nicklas766/mongo-connecter/maintainability)
-
 [![Code Coverage](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/build-status/master)
 
-This module lets you connect to your mongodb without hassle. It contains a
-prebuilt api.
+This module lets you connect to your mongodb without hassle. It also contains a prebuilt api.
 
-When you call a function it connects to your mongodb and then closes the connection.
-The functions are asynchronous and returns promises, therefore you'll need to
-use `await` or `.then()`.
+When you call a function it connects to your mongodb and the collection, executes the function/functions you want. Then it closes the db.
+The functions are asynchronous and returns promises, therefore you'll need to use `await` or `.then()`.
 
 
 ## Installation
@@ -24,52 +20,66 @@ npm install mongo-connecter --save
 ## Setup
 ```javascript
 const dsn = "mongodb://localhost:27017/people"
-const db  = require('mongo-connecter').connect(dsn, 'collection')
+const myCollection  = require('mongo-connecter').init(dsn, 'collection')
+```
+I will use this for my documentation below:
+```javascript
+const artists  = require('mongo-connecter').init(dsn, 'artists')
 ```
 
 ## How to use
-
-
-**Fetch**
+**`collectionDo`:**
+It will execute all functions but return the last,
 ```javascript
-const data = await db.fetch()
+data = await artists.collectionDo(
+    col => col.insert({name: 'Jason'}),
+    col => col.findOne({name: 'Jason'})
+);
 ```
+## How to use prebuilt api
+You only need `collectionDo()` but you can also use the prebuilt api:
 
-**Insert**
+**`fetch`:**
+```javascript
+const data = await myCollection.fetch()
+// or
+const data = await artists.fetch({name: "John"}) // returns array with artists with name john
+```
+**`fetchOne`:**
+```javascript
+const data = await myCollection.fetchOne()
+```
+**`insert`:**
 ```javascript
 var item = {
-    name: req.body.name,
-    wikipedia: req.body.wikipedia
+    name: "Veronica",
+    wikipedia: 'link'
 }
-const info = await db.insert(item)
+const info = await artists.insert(item)
 ```
 
-**Update**
+**`update`:**
 ```javascript
 var item = {
-    name: req.body.name,
-    wikipedia: req.body.wikipedia
+    name: 'new name',
+    wikipedia: 'new link'
 }
-await db.update(req.body.id, item)
+await artists.update(_id, item)
 ```
 
-**Remove**
+**`remove`:**
 ```javascript
-await db.remove(req.body.id)
+await artists.remove(_id)
 ```
 
-**Connect**
-This will return the actual db and collection
-```javascript
-const {db, col} = await db.connect()
-const data      = col.find().toArray()
+**`insertAndFetch(item)`:** inserts and then returns your new item
+**`updateAndFetch(_id, item)`:** updates and then returns your updated item
 
-await db.close()
-```
+
 
 **Example with express**
 ```javascript
-// Create an object and return new list of objects
+// Create an object and return list of all objects
 router.post("/insert", async (req, res) => {
     var item = {
         name: req.body.name,
@@ -78,8 +88,8 @@ router.post("/insert", async (req, res) => {
     }
 
     try {
-        await db.insert(item)
-        const data = await db.fetch()
+        await artists.insert(item)
+        const data = await artists.fetch()
 
         res.json(data)
     } catch (err) {
@@ -91,13 +101,12 @@ router.post("/insert", async (req, res) => {
 
 ## Testing
 
-We use docker as testing enviroment. All code except `src` and `index.js` is basically just for
-testing.
+We use docker as testing enviroment.
 
 ```
-// Three containers for docker, mongodb, express, tests
+// starts mongodb and then test
 npm run docker-build-start
 
-// If you only want to test
+// If you only want to start test
 npm run docker-build-start test
 ```

@@ -11,27 +11,13 @@ services:
             - 27017:27017
         command: mongod
 
-    express:
+    test:
         build:
             context: .
             dockerfile: Dockerfile
         environment:
-            - DBWEBB_DSN=mongodb://mongodb:27017/people
-        volumes:
-            - ./:/app/
-            - /app/node_modules/
-        ports:
-            - 1337:1337
-        links:
-            - mongodb
-        command: "npm start"
-    test:
-        build:
-            context: .
-            dockerfile: docker/Dockerfile-node-latest
-        environment:
             - DBWEBB_DSN=mongodb://mongodb:27017/test
         links:
-            - express
+            - mongodb
         volumes:
             - ./:/home/node/app

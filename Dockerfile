@@ -1,16 +1,18 @@
-FROM node:alpine
+#
+# Image for running test suite.
+#
+FROM node:latest
 
-# Create app directory
-WORKDIR /usr/src/app
+RUN mkdir -p /app
+WORKDIR /app
 
-# Install app dependencies
-COPY package.json .
-# For npm@5 or later, copy package-lock.json as well
-# COPY package.json package-lock.json ./
+COPY package.json /app
 
 RUN npm install
+ENV NODE_ENV=production
 
 # Bundle app source
 COPY . .
 
-CMD [ "npm", "start" ]
+EXPOSE 3000
+CMD ["npm", "test"]
