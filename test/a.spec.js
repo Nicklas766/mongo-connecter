@@ -22,21 +22,33 @@ var assert = require('assert');
 
 // console.log(wrapper.debug());
 
-describe('try out the fetch', function() {
-    it('should return array which contains array[0].name Jason Mraz', function(done) {
+describe('try out MongoConnecter', function() {
+    it('should return array, [0].name == Jason Mraz, [1].name == Veronica Maggio', function(done) {
         request(app).get("/reset")
             .set('Accept', 'application/json')
             .expect(200)
             .then(function (res) {
-                assert(res.body[0].name == "Jason Mraz");
+                assert(res.body[0].name == "Jason Mraz"),
+                assert(res.body[1].name == "Veronica Maggio");
                 done();
             }).catch(done);
     });
-    it('should return veronica maggio at index 1', function(done) {
+    it('try fetch, should return same as above', function(done) {
         request(app).get("/get")
             .set('Accept', 'application/json')
             .expect(200)
             .then(function (res) {
+                assert(res.body[0].name == "Jason Mraz"),
+                assert(res.body[1].name == "Veronica Maggio");
+                done();
+            }).catch(done);
+    });
+    it('try collectionDo, should return same as above', function(done) {
+        request(app).get("/col")
+            .set('Accept', 'application/json')
+            .expect(200)
+            .then(function (res) {
+                assert(res.body[0].name == "Jason Mraz"),
                 assert(res.body[1].name == "Veronica Maggio");
                 done();
             }).catch(done);

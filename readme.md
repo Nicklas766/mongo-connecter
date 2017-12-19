@@ -23,8 +23,8 @@ npm install mongo-connecter --save
 
 ## Setup
 ```javascript
-const dsn = "mongodb://localhost:27017/people";
-const db  = require('mongo-connecter').connect(dsn, 'collection');
+const dsn = "mongodb://localhost:27017/people"
+const db  = require('mongo-connecter').connect(dsn, 'collection')
 ```
 
 ## How to use
@@ -32,7 +32,7 @@ const db  = require('mongo-connecter').connect(dsn, 'collection');
 
 **Fetch**
 ```javascript
-const data = await db.fetch();
+const data = await db.fetch()
 ```
 
 **Insert**
@@ -40,8 +40,8 @@ const data = await db.fetch();
 var item = {
     name: req.body.name,
     wikipedia: req.body.wikipedia
-};
-const info = await db.insert(item);
+}
+const info = await db.insert(item)
 ```
 
 **Update**
@@ -49,14 +49,22 @@ const info = await db.insert(item);
 var item = {
     name: req.body.name,
     wikipedia: req.body.wikipedia
-};
-
-await db.update(req.body.id, item);
+}
+await db.update(req.body.id, item)
 ```
 
 **Remove**
 ```javascript
-await db.remove(req.body.id);
+await db.remove(req.body.id)
+```
+
+**Connect**
+This will return the actual db and collection
+```javascript
+const {db, col} = await db.connect()
+const data      = col.find().toArray()
+
+await db.close()
 ```
 
 **Example with express**
@@ -67,18 +75,18 @@ router.post("/insert", async (req, res) => {
         name: req.body.name,
         wikipedia: req.body.wikipedia,
         youtube: req.body.youtube
-    };
+    }
 
     try {
-        await db.insert(item);
-        const data = await db.fetch();
+        await db.insert(item)
+        const data = await db.fetch()
 
-        res.json(data);
+        res.json(data)
     } catch (err) {
-        console.log(err);
-        res.json(err);
+        console.log(err)
+        res.json(err)
     }
-});
+})
 ```
 
 ## Testing

@@ -5,7 +5,8 @@
 
 // Connect to database with mongo-connecter
 const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/people";
-const db = require('./src/MongoConnect.js').mongoConnect(dsn, 'artists');
+const artists = require('./index.js').init(dsn, 'artists');
+
 // Express server
 var path = require('path');
 const express = require("express");
@@ -21,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Return a JSON object with list of all documents within the collection.
 app.get("/get", async (req, res) => {
     try {
-        var data = await db.fetch();
+        const data = await artists.fetch();
 
         res.json(data);
     }    catch (err) {
@@ -39,8 +40,8 @@ app.post("/insert", async (req, res) => {
     };
 
     try {
-        await db.insert(item);
-        const data = await db.fetch();
+        await artists.insert(item);
+        const data = await artists.fetch();
 
         res.json(data);
     }    catch (err) {
@@ -58,8 +59,8 @@ app.post("/update", async (req, res) => {
     };
 
     try {
-        await db.update(req.body.id, item);
-        const data = await db.fetch();
+        await artists.update(req.body.id, item);
+        const data = await artists.fetch();
 
         res.json(data);
     }    catch (err) {
@@ -71,8 +72,8 @@ app.post("/update", async (req, res) => {
 // Delete an object in the collection and return new
 app.post("/delete", async (req, res) => {
     try {
-        await db.remove(req.body.id);
-        const data = await db.fetch();
+        await artists.remove(req.body.id);
+        const data = await artists.fetch();
 
         res.json(data);
     }    catch (err) {
@@ -81,11 +82,22 @@ app.post("/delete", async (req, res) => {
     }
 });
 
+// Delete an object in the collection and return new
+app.get("/col", async (req, res) => {
+    try {
+        const data = await artists.collectionDo(col => col.find({}).toArray());
+
+        res.json(data);
+    }    catch (err) {
+        console.log(err);
+        res.json(err);
+    }
+});
 
 // Delete an object in the collection and return new
 app.get("/reset", async (req, res) => {
     try {
-        const data = await db.reset();
+        const data = await artists.reset();
 
         res.json(data);
     }    catch (err) {
@@ -100,8 +112,7 @@ app.use('/insert', express.static(path.join(__dirname, 'client/public')));
 app.use('/update', express.static(path.join(__dirname, 'client/public')));
 app.use('/delete', express.static(path.join(__dirname, 'client/public')));
 app.use('/reset', express.static(path.join(__dirname, 'client/public')));
-
-
+app.use('/col', express.static(path.join(__dirname, 'client/public')));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

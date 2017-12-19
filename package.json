@@ -1,6 +1,6 @@
 {
   "name": "mongo-connecter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Connects to your mongodb with pre-built functions",
   "repository" : {
       "type" : "git",
@@ -12,6 +12,7 @@
     "mocha": "nyc --reporter=html --reporter=text mocha",
     "stylelint": "node_modules/.bin/stylelint **/*.css",
     "eslint": "node_modules/.bin/eslint --ignore-path .eslintignore .",
+    "eslint-fix": "eslint --ignore-path .eslintignore --fix .",
     "coverage-scrut": "nyc --reporter=clover mocha --reporter spec test/react/testSetup.js \"test/**/*.spec.js\"",
     "docker-build-start": "docker-compose up -d --no-deps --build"
   },

@@ -1,8 +1,7 @@
 'use strict';
 
-const connect = {};
 
-connect.connect = require('./src/MongoConnect.js').mongoConnect;
+const mongoConnect = require('./src/MongoConnect.js');
 
 
-module.exports = connect;
+module.exports = mongoConnect;
