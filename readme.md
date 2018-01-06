@@ -5,6 +5,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Nicklas766/mongo-connecter/build-status/master)
 [![npm version](https://badge.fury.io/js/mongo-connecter.svg)](https://badge.fury.io/js/mongo-connecter)
+
 This module lets you connect to your mongodb without hassle. It also contains a prebuilt api.
 
 When you call a function it connects to your mongodb and the collection, executes the function/functions you want. Then it closes the db.
