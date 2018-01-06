@@ -1,7 +1,7 @@
 {
   "name": "mongo-connecter",
-  "version": "1.0.3",
-  "description": "Connects to your mongodb with pre-built functions",
+  "version": "1.0.4",
+  "description": "Connects to your mongodb without hassle. It also contains a prebuilt api.",
   "repository" : {
       "type" : "git",
       "url" : "https://github.com/Nicklas766/mongo-connecter"
